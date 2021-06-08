@@ -1,8 +1,11 @@
 package dev.zepnex;
 
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
@@ -13,7 +16,7 @@ public class App {
 			broker = "ssl://" + ip + ":" + port;
 		else
 			broker = "tcp://" + ip + ":" + port;
-		
+
 		System.out.println(broker);
 		String clientId = "emqx_test";
 		MemoryPersistence persistence = new MemoryPersistence();
@@ -31,7 +34,6 @@ public class App {
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
-
 			System.out.println("Connected");
 
 			client.disconnect();

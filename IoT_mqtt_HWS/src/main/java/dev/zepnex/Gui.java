@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -15,6 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.JTable;
+import javax.swing.border.BevelBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 
 public class Gui {
 
@@ -50,15 +57,15 @@ public class Gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		//Connection frame which will hide after clicking Beam Me Up Scotty
+
+		// Connection frame which will hide after clicking Beam Me Up Scotty
 		final JPanel connect = new JPanel();
 		connect.setSize(screenSize);
 		frame.getContentPane().add(connect);
@@ -83,22 +90,32 @@ public class Gui {
 		txtPort.setFont(new Font("Arial", Font.BOLD, 12));
 		txtPort.setBounds((screenSize.width / 2) - 80, 70, 140, 25);
 		connect.add(txtPort);
-		
-		
-		//Second pane to use if u want to display all the info
-		final JPanel panel = new JPanel();
-		panel.setSize(screenSize);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		
-		// Button to establish connection with the broker just class the method connection in App.java
 
+		
+		// whole radiobutton scroll pane
+		JPanel subscribePane = new JPanel();
+		// create scroll pane and add it to a normal pane
+		final JScrollPane scrollPane = new JScrollPane(subscribePane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVisible(false);
+		// create array of radiobutton
+		JRadioButton[] jRBtn = new JRadioButton[10];
+		for (int i = 0; i < jRBtn.length; i++) {
+			// initialize btn and add it to pane
+			subscribePane.add(jRBtn[i] = new JRadioButton("" + i));
+		}
+		subscribePane.setLayout(new GridLayout(jRBtn.length, 0, 0, 0));
+		scrollPane.setBounds(1131, 0, 225, 877);
+		frame.getContentPane().add(scrollPane);
+
+		
+		// Button to establish connection with the broker just class the method
+		// connection in App.java
 		JButton btnCon = new JButton("Beam Me Up Scotty");
 		btnCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				connect.setVisible(false);
-				panel.setBackground(Color.black);
+				scrollPane.setVisible(true);
 				new App().connect(txtIP.getText(), txtPort.getText(), encryptedCon);
 
 			}
@@ -107,7 +124,8 @@ public class Gui {
 		btnCon.setBounds((screenSize.width / 2) - 200, 400, 408, 23);
 		connect.add(btnCon);
 
-		//Toggle Button -> if u want encrypted connection or not will just change the boolean encryptedCon
+		// Toggle Button -> if u want encrypted connection or not will just change the
+		// boolean encryptedCon
 		final JToggleButton tb = new JToggleButton("not encrypted connection");
 		tb.setFont(new Font("Arial", Font.BOLD, 12));
 		tb.setBounds((screenSize.width / 2) - 85, 200, 181, 23);
@@ -118,7 +136,7 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JToggleButton tBtn = (JToggleButton) e.getSource();
-				//Toggles the boolean
+				// Toggles the boolean
 				if (tBtn.isSelected()) {
 					tb.setText("encrypted connection");
 					txtPort.setText("8883");
@@ -133,15 +151,5 @@ public class Gui {
 			}
 		});
 
-	}
-
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-
-		public void actionPerformed(ActionEvent e) {
-		}
 	}
 }
