@@ -1,4 +1,4 @@
-package dev.zepnex;
+package application;
 
 public class Setup {
 

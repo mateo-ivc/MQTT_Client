@@ -1,11 +1,8 @@
-package dev.zepnex;
+package application;
 
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
@@ -31,10 +28,16 @@ public class App {
 			// retain session
 			connOpts.setCleanSession(true);
 
+			OnMessageCallback myCallback = new OnMessageCallback();
+			client.setCallback(myCallback);
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
 			System.out.println("Connected");
+
+			// Subscription
+			Gui gui = new Gui();
+			client.subscribe(gui.text);
 
 			client.disconnect();
 			System.out.println("Disconnected");

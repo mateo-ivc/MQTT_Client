@@ -1,4 +1,4 @@
-package dev.zepnex;
+package application;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;

@@ -1,6 +1,5 @@
-package dev.zepnex;
+package application;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -8,20 +7,16 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
-import javax.swing.AbstractAction;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.JTable;
-import javax.swing.border.BevelBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
 
 public class Gui {
 
@@ -29,6 +24,7 @@ public class Gui {
 	private JTextField txtIP;
 	private JTextField txtPort;
 	boolean encryptedCon = false;
+	static String text;
 
 	/**
 	 * Launch the application.
@@ -57,7 +53,7 @@ public class Gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
+		String[] topics = { "Temperature", "Pressure", "Humidity", "Accelleration", "Gyrodata", "Magdata" };
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		frame = new JFrame();
@@ -91,24 +87,37 @@ public class Gui {
 		txtPort.setBounds((screenSize.width / 2) - 80, 70, 140, 25);
 		connect.add(txtPort);
 
-		
+		ActionListener listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() instanceof JRadioButton) {
+					text = ((JRadioButton) e.getSource()).getText();
+					System.out.println(text);
+				}
+			}
+		};
+
 		// whole radiobutton scroll pane
 		JPanel subscribePane = new JPanel();
 		// create scroll pane and add it to a normal pane
 		final JScrollPane scrollPane = new JScrollPane(subscribePane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(screenSize.width - 225, 0, 255, screenSize.height/ 2);
 		scrollPane.setVisible(false);
 		// create array of radiobutton
-		JRadioButton[] jRBtn = new JRadioButton[10];
+		ButtonGroup btnGroup = new ButtonGroup();
+		JRadioButton[] jRBtn = new JRadioButton[6];
 		for (int i = 0; i < jRBtn.length; i++) {
 			// initialize btn and add it to pane
-			subscribePane.add(jRBtn[i] = new JRadioButton("" + i));
+			subscribePane.add(jRBtn[i] = new JRadioButton(topics[i]));
+			jRBtn[i].addActionListener(listener);
+			btnGroup.add(jRBtn[i]);
 		}
+
 		subscribePane.setLayout(new GridLayout(jRBtn.length, 0, 0, 0));
-		scrollPane.setBounds(1131, 0, 225, 877);
+		//scrollPane.setBounds(1131, 0, 225, 439);
 		frame.getContentPane().add(scrollPane);
 
-		
 		// Button to establish connection with the broker just class the method
 		// connection in App.java
 		JButton btnCon = new JButton("Beam Me Up Scotty");
