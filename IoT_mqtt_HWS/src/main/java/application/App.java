@@ -6,8 +6,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
+	MqttClient client;
 
-	public void connect(String ip, String port, boolean encrypted) {
+	public MqttClient connect(String ip, String port, boolean encrypted) {
 		String broker;
 		if (encrypted == true)
 			broker = "ssl://" + ip + ":" + port;
@@ -21,6 +22,10 @@ public class App {
 		try {
 			MqttClient client = new MqttClient(broker, clientId, persistence);
 
+			// Callback
+			OnMessageCallback myCallback = new OnMessageCallback();
+			client.setCallback(myCallback);
+
 			// MQTT connection option
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setUserName("emqx_test");
@@ -28,20 +33,18 @@ public class App {
 			// retain session
 			connOpts.setCleanSession(true);
 
-			OnMessageCallback myCallback = new OnMessageCallback();
-			client.setCallback(myCallback);
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
 			System.out.println("Connected");
 
 			// Subscription
-			Gui gui = new Gui();
-			//client.subscribe(gui.text);
+			//Gui gui = new Gui();
+			// client.subscribe(gui.text);
 
-			client.disconnect();
-			System.out.println("Disconnected");
-			client.close();
+//			client.disconnect();
+//			System.out.println("Disconnected");
+//			client.close();
 		} catch (MqttException me) {
 			System.out.println("reason " + me.getReasonCode());
 			System.out.println("msg " + me.getMessage());
@@ -50,5 +53,6 @@ public class App {
 			System.out.println("excep " + me);
 			me.printStackTrace();
 		}
+		return client;
 	}
 }
