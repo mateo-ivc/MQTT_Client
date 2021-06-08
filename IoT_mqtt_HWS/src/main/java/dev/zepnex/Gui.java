@@ -1,23 +1,20 @@
 package dev.zepnex;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.Toolkit;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.AbstractAction;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class Gui {
 
@@ -82,7 +79,7 @@ public class Gui {
 		txtIP.setBounds((screenSize.width / 2) - 80, 30, 140, 25);
 		connect.add(txtIP);
 
-		txtPort = new JTextField();
+		txtPort = new JTextField("1883");
 		txtPort.setFont(new Font("Arial", Font.BOLD, 12));
 		txtPort.setBounds((screenSize.width / 2) - 80, 70, 140, 25);
 		connect.add(txtPort);
@@ -124,10 +121,12 @@ public class Gui {
 				//Toggles the boolean
 				if (tBtn.isSelected()) {
 					tb.setText("encrypted connection");
+					txtPort.setText("8883");
 					encryptedCon = true;
 
 				} else {
 					tb.setText("not encrypted connection");
+					txtPort.setText("1883");
 					encryptedCon = false;
 				}
 
