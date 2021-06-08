@@ -17,6 +17,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import java.awt.Color;
 
 public class Gui {
 
@@ -97,26 +98,38 @@ public class Gui {
 			}
 		};
 
-		// whole radiobutton scroll pane
-		JPanel subscribePane = new JPanel();
+		
+		
+		
+		
 		// create scroll pane and add it to a normal pane
-		final JScrollPane scrollPane = new JScrollPane(subscribePane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(screenSize.width - 225, 0, 255, screenSize.height/ 2);
-		scrollPane.setVisible(false);
+		final JPanel datapane = new JPanel();
+		datapane.setSize(screenSize);
+		datapane.setVisible(false);
+		datapane.setLayout(null);
+		
+		// whole radiobutton scroll pane
+		JPanel subscriberPanel = new JPanel();
+		subscriberPanel.setBounds(screenSize.width -255, 0, 255,screenSize.height/ 2);
+		
 		// create array of radiobutton
 		ButtonGroup btnGroup = new ButtonGroup();
 		JRadioButton[] jRBtn = new JRadioButton[6];
 		for (int i = 0; i < jRBtn.length; i++) {
 			// initialize btn and add it to pane
-			subscribePane.add(jRBtn[i] = new JRadioButton(topics[i]));
+			subscriberPanel.add(jRBtn[i] = new JRadioButton(topics[i]));
 			jRBtn[i].addActionListener(listener);
 			btnGroup.add(jRBtn[i]);
 		}
-
-		subscribePane.setLayout(new GridLayout(jRBtn.length, 0, 0, 0));
+		
+		jRBtn[0].setSelected(true);
+		subscriberPanel.setLayout(new GridLayout(jRBtn.length, 0, 0, 0));
+		datapane.add(subscriberPanel);
+		
+		
+		
 		//scrollPane.setBounds(1131, 0, 225, 439);
-		frame.getContentPane().add(scrollPane);
+		frame.getContentPane().add(datapane);
 
 		// Button to establish connection with the broker just class the method
 		// connection in App.java
@@ -124,7 +137,7 @@ public class Gui {
 		btnCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				connect.setVisible(false);
-				scrollPane.setVisible(true);
+				datapane.setVisible(true);
 				new App().connect(txtIP.getText(), txtPort.getText(), encryptedCon);
 
 			}

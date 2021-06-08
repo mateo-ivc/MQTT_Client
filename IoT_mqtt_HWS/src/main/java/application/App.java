@@ -37,7 +37,7 @@ public class App {
 
 			// Subscription
 			Gui gui = new Gui();
-			client.subscribe(gui.text);
+			//client.subscribe(gui.text);
 
 			client.disconnect();
 			System.out.println("Disconnected");
