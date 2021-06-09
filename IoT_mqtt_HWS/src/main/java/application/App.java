@@ -1,5 +1,7 @@
 package application;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -7,8 +9,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
 	MqttClient client;
+	Singleton singleton = Singleton.getInstance();
 
-	@SuppressWarnings("finally")
 	public MqttClient connect(String ip, String port, boolean encrypted) {
 		String broker;
 		if (encrypted == true)
@@ -16,12 +18,11 @@ public class App {
 		else
 			broker = "tcp://" + ip + ":" + port;
 
-		System.out.println(broker);
 		String clientId = "emqx_test";
 		MemoryPersistence persistence = new MemoryPersistence();
 
 		try {
-			 client = new MqttClient(broker, clientId, persistence);
+			client = new MqttClient(broker, clientId, persistence);
 
 			// Callback
 			OnMessageCallback myCallback = new OnMessageCallback();
@@ -31,6 +32,7 @@ public class App {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setUserName("emqx_test");
 			connOpts.setPassword("emqx_test_password".toCharArray());
+
 			// retain session
 			connOpts.setCleanSession(true);
 
@@ -39,18 +41,21 @@ public class App {
 			client.connect(connOpts);
 
 			System.out.println("Connected");
-			
-	
+
 		} catch (MqttException me) {
+
 			System.out.println("reason " + me.getReasonCode());
 			System.out.println("msg " + me.getMessage());
 			System.out.println("loc " + me.getLocalizedMessage());
 			System.out.println("cause " + me.getCause());
 			System.out.println("excep " + me);
-			me.printStackTrace();
-		}finally {
-			return client;
+			// me.printStackTrace();
+			// stop thread
+			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again");
+			singleton.abortCon();
+
 		}
-		
+		return client;
+
 	}
 }

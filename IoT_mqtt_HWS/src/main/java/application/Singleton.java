@@ -1,9 +1,12 @@
 package application;
 
+import javax.swing.JFrame;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class Singleton {
+	Gui gui;
 	MqttClient client;
 
 	private static Singleton instance = null;
@@ -21,15 +24,21 @@ public class Singleton {
 
 	void connect(String ip, String port, boolean encryptedCon) {
 		client = new App().connect(ip, port, encryptedCon);
-		System.out.println(client);
 	}
-	
-	void subscribe(String text) {
+
+	void subscribe(String topic) {
 		try {
-			System.out.println(client);
-			System.out.println(text);
-			client.subscribe(text);
-			
+			client.subscribe(topic);
+			System.out.println("subscribed to: " + topic);
+
+		} catch (MqttException e) {
+			e.printStackTrace();
+		}
+	}
+	void unsubscribe(String topic) {
+		try {
+			client.unsubscribe(topic);
+			System.out.println("unsubscribed to: " + topic);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -39,10 +48,19 @@ public class Singleton {
 		try {
 			client.disconnect();
 			client.close();
+			gui.t.stop();
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
-	
+
+	}
+
+	void abortCon() {
+		gui.t.stop();
+	}
+
+	JFrame getFrame() {
+		return gui.frame;
 	}
 
 }

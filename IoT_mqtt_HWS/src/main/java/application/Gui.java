@@ -1,8 +1,6 @@
 package application;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -18,17 +16,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import javax.swing.SwingUtilities;
-import java.awt.CardLayout;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class Gui {
+	public Gui gui = this;
 	Singleton singleton = Singleton.getInstance();
-	private JFrame frame;
+	public JFrame frame;
 	private JTextField txtIP;
 	private JTextField txtPort;
 	private boolean encryptedCon = false;
-	private Thread t;
+	public Thread t;
+	private String temp = "";
 
 	/**
 	 * Launch the application.
@@ -39,6 +38,7 @@ public class Gui {
 				try {
 					Gui window = new Gui();
 					window.frame.setVisible(true);
+					window.setInstance();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -87,7 +87,7 @@ public class Gui {
 		lblPort.setBounds(screenSize.width / 3, 70, 82, 25);
 		connect.add(lblPort);
 
-		txtIP = new JTextField("test.mosquitto.org");
+		txtIP = new JTextField("127.0.0.1");
 		txtIP.setFont(new Font("Arial", Font.BOLD, 12));
 		txtIP.setBounds((screenSize.width / 2) - 80, 30, 140, 25);
 		connect.add(txtIP);
@@ -166,9 +166,15 @@ public class Gui {
 		ActionListener listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String text = ((JRadioButton) e.getSource()).getText();
-				
-				singleton.subscribe(text);
+				String topic = ((JRadioButton) e.getSource()).getText();
+				if (topic.equals(temp)) {
+					btnGroup.clearSelection();
+					singleton.unsubscribe(topic);
+				} else {
+					temp = topic;
+					singleton.subscribe(topic);
+
+				}
 			}
 		};
 
@@ -194,16 +200,20 @@ public class Gui {
 		graphPanel.setLayout(new CardLayout(0, 0));
 
 		JPanel panel = new JPanel();
-		graphPanel.add(panel, "name_424112904271400");
+		graphPanel.add(panel);
 
 		JPanel panelCo = new JPanel();
 		panelCo.setVisible(false);
-		graphPanel.add(panelCo, "name_424118374340800");
+		graphPanel.add(panelCo);
 
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(Color.ORANGE);
 		textPanel.setBounds(10, 551, 1900, 457);
 		datapane.add(textPanel);
 
+	}
+
+	void setInstance() {
+		singleton.gui = this.gui;
 	}
 }
