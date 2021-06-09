@@ -8,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class App {
 	MqttClient client;
 
+	@SuppressWarnings("finally")
 	public MqttClient connect(String ip, String port, boolean encrypted) {
 		String broker;
 		if (encrypted == true)
@@ -20,7 +21,7 @@ public class App {
 		MemoryPersistence persistence = new MemoryPersistence();
 
 		try {
-			MqttClient client = new MqttClient(broker, clientId, persistence);
+			 client = new MqttClient(broker, clientId, persistence);
 
 			// Callback
 			OnMessageCallback myCallback = new OnMessageCallback();
@@ -36,15 +37,10 @@ public class App {
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
+
 			System.out.println("Connected");
-
-			// Subscription
-			//Gui gui = new Gui();
-			// client.subscribe(gui.text);
-
-//			client.disconnect();
-//			System.out.println("Disconnected");
-//			client.close();
+			
+	
 		} catch (MqttException me) {
 			System.out.println("reason " + me.getReasonCode());
 			System.out.println("msg " + me.getMessage());
@@ -52,7 +48,9 @@ public class App {
 			System.out.println("cause " + me.getCause());
 			System.out.println("excep " + me);
 			me.printStackTrace();
+		}finally {
+			return client;
 		}
-		return client;
+		
 	}
 }
