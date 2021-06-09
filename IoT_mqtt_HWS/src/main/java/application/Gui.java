@@ -171,6 +171,8 @@ public class Gui {
 					btnGroup.clearSelection();
 					singleton.unsubscribe(topic);
 				} else {
+					if (!temp.isEmpty())
+						singleton.unsubscribe(temp);
 					temp = topic;
 					singleton.subscribe(topic);
 
