@@ -17,14 +17,6 @@ public class App {
 		if (encrypted == true)
 			broker = "ssl://" + ip + ":" + port;
 		else
-			
-			
-			
-			
-			
-			
-			
-			
 			broker = "tcp://" + ip + ":" + port;
 
 		String clientId = "emqx_test";
