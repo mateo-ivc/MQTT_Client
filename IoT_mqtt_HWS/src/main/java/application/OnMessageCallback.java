@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class OnMessageCallback implements MqttCallback {
+	Singleton singleton = Singleton.getInstance();
 	ArrayList<Message> list = new ArrayList<Message>();
 
 	public void connectionLost(Throwable cause) {
@@ -16,7 +17,7 @@ public class OnMessageCallback implements MqttCallback {
 
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		System.out.println("Received Message! Topic: " + topic + " | Message: " + new String(message.getPayload()));
-		
+
 		list.add(new Message(topic, new String(message.getPayload())));
 		if (list.size() == 11) {
 			list.remove(0);
@@ -25,13 +26,12 @@ public class OnMessageCallback implements MqttCallback {
 
 			}
 		}
-
-		
+		singleton.displayText();
 
 	}
 
 	public void deliveryComplete(IMqttDeliveryToken token) {
 		System.out.println("deliveryComplete---------" + token.isComplete());
 	}
-	
+
 }

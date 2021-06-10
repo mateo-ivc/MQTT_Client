@@ -8,15 +8,23 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
-	MqttClient client;
+	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
-	public OnMessageCallback myCallback;
+	private OnMessageCallback myCallback;
 
-	public MqttClient connect(String ip, String port, boolean encrypted) {
+	public App connect(String ip, String port, boolean encrypted) {
 		String broker;
 		if (encrypted == true)
 			broker = "ssl://" + ip + ":" + port;
 		else
+			
+			
+			
+			
+			
+			
+			
+			
 			broker = "tcp://" + ip + ":" + port;
 
 		String clientId = "emqx_test";
@@ -56,7 +64,16 @@ public class App {
 			singleton.abortCon();
 
 		}
-		return client;
+		return this;
 
 	}
+
+	MqttClient getClient() {
+		return client;
+	}
+
+	OnMessageCallback getCallback() {
+		return myCallback;
+	}
+
 }

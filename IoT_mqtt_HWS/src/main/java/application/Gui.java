@@ -30,6 +30,7 @@ public class Gui {
 	private boolean encryptedCon = false;
 	public Thread t;
 	private String temp = "";
+	JTextPane textPane;
 
 	/**
 	 * Launch the application.
@@ -68,11 +69,6 @@ public class Gui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		// whole radiobutton scroll pane
-		final JPanel datapane = new JPanel();
-		datapane.setSize(screenSize);
-		datapane.setVisible(false);
-
 		// Connection frame which will hide after clicking Beam Me Up Scotty
 		final JPanel connect = new JPanel();
 		connect.setSize(screenSize);
@@ -98,6 +94,12 @@ public class Gui {
 		txtPort.setFont(new Font("Arial", Font.BOLD, 12));
 		txtPort.setBounds((screenSize.width / 2) - 80, 70, 140, 25);
 		connect.add(txtPort);
+
+		// whole radiobutton pane
+		final JPanel datapane = new JPanel();
+		datapane.setSize(screenSize);
+		datapane.setVisible(false);
+		datapane.setLayout(null);
 
 		// Button to establish connection with the broker just class the method
 		// connection in App.java
@@ -127,15 +129,6 @@ public class Gui {
 		tb.setBounds((screenSize.width / 2) - 85, 200, 181, 23);
 		connect.add(tb);
 
-		JButton btnQuit = new JButton("Disconnect");
-		btnQuit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				t.stop();
-			}
-		});
-		btnQuit.setBounds(158, 400, 89, 23);
-		connect.add(btnQuit);
-
 		tb.addActionListener(new ActionListener() {
 
 			@Override
@@ -153,15 +146,7 @@ public class Gui {
 				}
 			}
 		});
-		datapane.setLayout(null);
 
-		// whole radiobutton scroll pane
-		JPanel subscriberPanel = new JPanel();
-		subscriberPanel.setBounds(screenSize.width - 270, 0, 255, screenSize.height / 2);
-		subscriberPanel.setLayout(new GridLayout(7, 1));
-		datapane.add(subscriberPanel);
-
-		frame.getContentPane().add(datapane);
 		// create array of radiobutton
 		final ButtonGroup btnGroup = new ButtonGroup();
 		JRadioButton[] jRBtn = new JRadioButton[6];
@@ -182,12 +167,30 @@ public class Gui {
 			}
 		};
 
+		// whole radiobutton scroll pane
+		JPanel subscriberPanel = new JPanel();
+		subscriberPanel.setBounds(screenSize.width - 270, 0, 255, screenSize.height / 2);
+		subscriberPanel.setLayout(new GridLayout(7, 1));
+		datapane.add(subscriberPanel);
+
 		for (int i = 0; i < jRBtn.length; i++) {
 			// initialize btn and add it to pane
 			subscriberPanel.add(jRBtn[i] = new JRadioButton(topics[i]));
 			jRBtn[i].addActionListener(listener);
 			btnGroup.add(jRBtn[i]);
 		}
+
+		frame.getContentPane().add(datapane);
+
+		// Disconnect Button in Connect Panel
+		JButton btnQuit = new JButton("Disconnect");
+		btnQuit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				t.stop();
+			}
+		});
+		btnQuit.setBounds(158, 400, 89, 23);
+		connect.add(btnQuit);
 
 		JPanel graphPanel = new JPanel();
 		graphPanel.setBounds(10, 0, 1597, 540);
@@ -205,8 +208,11 @@ public class Gui {
 		textPanel.setBackground(Color.ORANGE);
 		textPanel.setBounds(10, 551, 1900, 457);
 		datapane.add(textPanel);
+		textPanel.setLayout(null);
 
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
+		textPane.setBounds(0, 5, 578, 322);
+		textPane.setFont(new Font("Arial", Font.BOLD, 12));
 		textPanel.add(textPane);
 
 	}
