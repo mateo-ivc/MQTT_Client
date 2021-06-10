@@ -10,6 +10,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class App {
 	MqttClient client;
 	Singleton singleton = Singleton.getInstance();
+	public OnMessageCallback myCallback;
 
 	public MqttClient connect(String ip, String port, boolean encrypted) {
 		String broker;
@@ -25,7 +26,7 @@ public class App {
 			client = new MqttClient(broker, clientId, persistence);
 
 			// Callback
-			OnMessageCallback myCallback = new OnMessageCallback();
+			myCallback = new OnMessageCallback();
 			client.setCallback(myCallback);
 
 			// MQTT connection option

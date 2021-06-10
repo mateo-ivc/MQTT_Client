@@ -8,11 +8,12 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 public class Singleton {
 	Gui gui;
 	MqttClient client;
+	OnMessageCallback callBack;
 
 	private static Singleton instance = null;
 
 	private Singleton() {
-
+		
 	}
 
 	public static synchronized Singleton getInstance() {
@@ -35,6 +36,7 @@ public class Singleton {
 			e.printStackTrace();
 		}
 	}
+
 	void unsubscribe(String topic) {
 		try {
 			client.unsubscribe(topic);
@@ -61,6 +63,12 @@ public class Singleton {
 
 	JFrame getFrame() {
 		return gui.frame;
+	}
+	void getMessageCallback() {
+		
+	}
+	void displayText() {
+		
 	}
 
 }

@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.JTextPane;
 
 public class Gui {
 	public Gui gui = this;
@@ -187,15 +189,6 @@ public class Gui {
 			btnGroup.add(jRBtn[i]);
 		}
 
-		JButton btnNewButton = new JButton("Unsubscribe");
-		btnNewButton.setSize(255, 20);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnGroup.clearSelection();
-			}
-		});
-		subscriberPanel.add(btnNewButton);
-
 		JPanel graphPanel = new JPanel();
 		graphPanel.setBounds(10, 0, 1597, 540);
 		datapane.add(graphPanel);
@@ -212,6 +205,9 @@ public class Gui {
 		textPanel.setBackground(Color.ORANGE);
 		textPanel.setBounds(10, 551, 1900, 457);
 		datapane.add(textPanel);
+
+		JTextPane textPane = new JTextPane();
+		textPanel.add(textPane);
 
 	}
 
