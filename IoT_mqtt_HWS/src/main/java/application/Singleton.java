@@ -1,7 +1,5 @@
 package application;
 
-import java.time.LocalDateTime;
-
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
@@ -20,7 +18,7 @@ public class Singleton {
 	private static Singleton instance = null;
 
 	private Singleton() {
-
+	
 	}
 
 	public static synchronized Singleton getInstance() {
@@ -40,7 +38,8 @@ public class Singleton {
 		try {
 			client.subscribe(topic);
 			System.out.println("subscribed to: " + topic);
-			chart = new DrawChart();
+			if(chart==null)
+				chart = new DrawChart();
 			if (!start) {
 				chart.lineChart(topic);
 				start = true;

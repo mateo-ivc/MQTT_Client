@@ -22,7 +22,10 @@ public class DrawChart extends JFrame {
 
 	public void lineChart(String topic) {
 		System.out.println(topic);
+		this.x = 0;
+		this.y = 0;
 		XYDataset dataset = setDataSet(topic);
+
 		JFreeChart chart = ChartFactory.createXYLineChart(topic, "X-Axis", "Y-Axis", dataset, PlotOrientation.VERTICAL,
 				true, true, false);
 		cp = new ChartPanel(chart);
@@ -32,7 +35,6 @@ public class DrawChart extends JFrame {
 
 	public XYDataset setDataSet(String topic) {
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		System.out.println("test");
 		switch (topic) {
 		case "Temperature":
 			temp.add(x, y);
