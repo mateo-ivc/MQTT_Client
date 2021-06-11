@@ -1,5 +1,7 @@
 package application;
 
+import java.time.LocalDateTime;
+
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
@@ -12,6 +14,8 @@ public class Singleton {
 	App app;
 	MqttClient client;
 	OnMessageCallback callBack;
+	DrawChart chart;
+	private boolean start = false;
 
 	private static Singleton instance = null;
 
@@ -36,6 +40,13 @@ public class Singleton {
 		try {
 			client.subscribe(topic);
 			System.out.println("subscribed to: " + topic);
+			chart = new DrawChart();
+			if (!start) {
+				chart.lineChart(topic);
+				start = true;
+			} else {
+				chart.lineChart(topic);
+			}
 
 		} catch (MqttException e) {
 			e.printStackTrace();
@@ -75,9 +86,8 @@ public class Singleton {
 		gui.textPane.setText("");
 		try {
 			for (Message value : callBack.list) {
-				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + "\n \n", null);
+				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + " time: " + "\n \n", null);
 			}
-
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}

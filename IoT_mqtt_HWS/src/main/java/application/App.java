@@ -17,14 +17,6 @@ public class App {
 		if (encrypted == true)
 			broker = "ssl://" + ip + ":" + port;
 		else
-			
-			
-			
-			
-			
-			
-			
-			
 			broker = "tcp://" + ip + ":" + port;
 
 		String clientId = "emqx_test";
@@ -58,8 +50,6 @@ public class App {
 			System.out.println("loc " + me.getLocalizedMessage());
 			System.out.println("cause " + me.getCause());
 			System.out.println("excep " + me);
-			// me.printStackTrace();
-			// stop thread
 			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again");
 			singleton.abortCon();
 

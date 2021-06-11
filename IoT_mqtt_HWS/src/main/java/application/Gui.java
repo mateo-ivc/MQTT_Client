@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -9,8 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
 
 public class Gui {
 	public Gui gui = this;
@@ -31,6 +30,7 @@ public class Gui {
 	public Thread t;
 	private String temp = "";
 	JTextPane textPane;
+	JPanel graphPanel;
 
 	/**
 	 * Launch the application.
@@ -72,8 +72,8 @@ public class Gui {
 		// Connection frame which will hide after clicking Beam Me Up Scotty
 		final JPanel connect = new JPanel();
 		connect.setSize(screenSize);
-		frame.getContentPane().add(connect);
 		connect.setLayout(null);
+		frame.getContentPane().add(connect);
 
 		JLabel lblBroker = new JLabel("Broker-IP:");
 		lblBroker.setFont(new Font("Arial", Font.BOLD, 12));
@@ -85,7 +85,7 @@ public class Gui {
 		lblPort.setBounds(screenSize.width / 3, 70, 82, 25);
 		connect.add(lblPort);
 
-		txtIP = new JTextField("127.0.0.1");
+		txtIP = new JTextField("test.mosquitto.org");
 		txtIP.setFont(new Font("Arial", Font.BOLD, 12));
 		txtIP.setBounds((screenSize.width / 2) - 80, 30, 140, 25);
 		connect.add(txtIP);
@@ -95,7 +95,7 @@ public class Gui {
 		txtPort.setBounds((screenSize.width / 2) - 80, 70, 140, 25);
 		connect.add(txtPort);
 
-		// whole radiobutton pane
+		// whole pane for displaying all informations
 		final JPanel datapane = new JPanel();
 		datapane.setSize(screenSize);
 		datapane.setVisible(false);
@@ -104,7 +104,6 @@ public class Gui {
 		// Button to establish connection with the broker just class the method
 		// connection in App.java
 		JButton btnCon = new JButton("Beam Me Up Scotty");
-		// btnCon.addActionListener(l);
 		btnCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				t = new Thread() {
@@ -148,6 +147,7 @@ public class Gui {
 		});
 
 		// create array of radiobutton
+		// subscribe per click and vice versa
 		final ButtonGroup btnGroup = new ButtonGroup();
 		JRadioButton[] jRBtn = new JRadioButton[6];
 		ActionListener listener = new ActionListener() {
@@ -157,6 +157,7 @@ public class Gui {
 				if (topic.equals(temp)) {
 					btnGroup.clearSelection();
 					singleton.unsubscribe(topic);
+					temp = "";
 				} else {
 					if (!temp.isEmpty())
 						singleton.unsubscribe(temp);
@@ -169,7 +170,7 @@ public class Gui {
 
 		// whole radiobutton scroll pane
 		JPanel subscriberPanel = new JPanel();
-		subscriberPanel.setBounds(screenSize.width - 270, 0, 255, screenSize.height / 2);
+		subscriberPanel.setBounds(screenSize.width - 255, 0, 255, 460);
 		subscriberPanel.setLayout(new GridLayout(7, 1));
 		datapane.add(subscriberPanel);
 
@@ -192,28 +193,24 @@ public class Gui {
 		btnQuit.setBounds(158, 400, 89, 23);
 		connect.add(btnQuit);
 
-		JPanel graphPanel = new JPanel();
-		graphPanel.setBounds(10, 0, 1597, 540);
+		graphPanel = new JPanel();
+		graphPanel.setBounds(0, 0, screenSize.width - 255, 460);
+		graphPanel.setLayout(null);
 		datapane.add(graphPanel);
-		graphPanel.setLayout(new CardLayout(0, 0));
 
-		JPanel panel = new JPanel();
-		graphPanel.add(panel);
-
-		JPanel panelCo = new JPanel();
-		panelCo.setVisible(false);
-		graphPanel.add(panelCo);
 
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(Color.ORANGE);
-		textPanel.setBounds(10, 551, 1900, 457);
-		datapane.add(textPanel);
+		textPanel.setBounds(0, screenSize.height-360, screenSize.width, 300);
 		textPanel.setLayout(null);
+		datapane.add(textPanel);
 
 		textPane = new JTextPane();
-		textPane.setBounds(0, 5, 578, 322);
 		textPane.setFont(new Font("Arial", Font.BOLD, 12));
+		textPane.setBounds(0,0,screenSize.width, 300);
+		textPane.setVisible(true);
 		textPanel.add(textPane);
+		
 
 	}
 
