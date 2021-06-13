@@ -8,14 +8,18 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import Json.Json;
 
 public class OnMessageCallback implements MqttCallback {
 	Singleton singleton = Singleton.getInstance();
 	ArrayList<Message> list = new ArrayList<Message>();
 	double start = 0;
-
 	String topic;
-	String[] parts;
+	String content;
 
 	public void connectionLost(Throwable cause) {
 		// After the connection is lost, it usually reconnects here
@@ -23,27 +27,26 @@ public class OnMessageCallback implements MqttCallback {
 	}
 
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
+
 		this.topic = topic;
-		String content = new String(message.getPayload());
-		content = content.replaceAll("'", "");
-		System.out.println("Received Message! Topic: " + topic + " | Message: " + new String(message.getPayload()));
+
+		// convert MqttMessage to string
+		content = new String(message.getPayload());
+		System.out.println(content);
+		content = content.replace("acc ", "");
+		content = content.replace("gyr ", "");
+		content = content.replace("mag ", "");
+		// Warning | have to re-write this block depending how we receive the message
+		System.out.println("Received Message! Topic: " + topic + " | Message: " + content);
+		// adding message to ArrayList
 		list.add(new Message(topic, content));
 
-		parts = content.split(":");
 		if (list.size() == 11) {
+			// update list if we get more then 10 messages
 			list.remove(0);
 		}
 		singleton.displayText();
-
-		singleton.chart.setX(LocalDateTime.now().getSecond());
-		singleton.chart.setY(Double.parseDouble(parts[1]));
-		singleton.chart.setDataSet(topic);
-
-		// singleton.chart.setDataSet(topic, time.now().getSecond(),
-		// Double.parseDouble(parts[1]));
-		// singleton.chart.lineChart(topic, time.now().getSecond(),
-		// Double.parseDouble(parts[1]));
-
+		setData();
 	}
 
 	public void deliveryComplete(IMqttDeliveryToken token) {
@@ -51,7 +54,46 @@ public class OnMessageCallback implements MqttCallback {
 	}
 
 	void setData() {
-
+		Gson gson = new Gson();
+		Json json = gson.fromJson(content, Json.class);
+		// update x and y coordinates of the chart
+		singleton.chart.setTime(LocalDateTime.now().getSecond());
+		switch (topic) {
+		case "Temperature":
+			singleton.chart.setX(Double.parseDouble(json.getTemp()));
+			break;
+		case "Pressure":
+			singleton.chart.setX(Double.parseDouble(json.getPress()));
+			break;
+		case "Humidity":
+			singleton.chart.setX(Double.parseDouble(json.getHumidity()));
+			break;
+		case "Accelleration":
+			singleton.chart.setX(Double.parseDouble(json.getX()));
+			singleton.chart.setY(Double.parseDouble(json.getY()));
+			singleton.chart.setZ(Double.parseDouble(json.getZ()));
+			System.out.println("----------");
+			System.out.println(Double.parseDouble(json.getX()));
+			System.out.println(Double.parseDouble(json.getY()));
+			System.out.println(Double.parseDouble(json.getZ()));
+			System.out.println("----------");
+			break;
+		case "Gyrodata":
+			singleton.chart.setX(Double.parseDouble(json.getX()));
+			singleton.chart.setY(Double.parseDouble(json.getY()));
+			singleton.chart.setZ(Double.parseDouble(json.getZ()));
+			break;
+		case "Magdate":
+			singleton.chart.setX(Double.parseDouble(json.getX()));
+			singleton.chart.setY(Double.parseDouble(json.getY()));
+			singleton.chart.setZ(Double.parseDouble(json.getZ()));
+			break;
+		default:
+			break;
+		}
+		// displaying chart in the gui
+		System.out.println("hi");
+		singleton.chart.setDataSet(topic);
 	}
 
 }

@@ -18,7 +18,7 @@ public class Singleton {
 	private static Singleton instance = null;
 
 	private Singleton() {
-	
+
 	}
 
 	public static synchronized Singleton getInstance() {
@@ -38,7 +38,7 @@ public class Singleton {
 		try {
 			client.subscribe(topic);
 			System.out.println("subscribed to: " + topic);
-			if(chart==null)
+			if (chart == null)
 				chart = new DrawChart();
 			if (!start) {
 				chart.lineChart(topic);
@@ -46,7 +46,6 @@ public class Singleton {
 			} else {
 				chart.lineChart(topic);
 			}
-
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +84,7 @@ public class Singleton {
 		gui.textPane.setText("");
 		try {
 			for (Message value : callBack.list) {
-				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + " time: " + "\n \n", null);
+				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + "\n \n", null);
 			}
 		} catch (BadLocationException e) {
 			e.printStackTrace();

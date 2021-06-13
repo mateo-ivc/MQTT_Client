@@ -187,7 +187,8 @@ public class Gui {
 		JButton btnQuit = new JButton("Disconnect");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				t.stop();
+				if(t != null)
+					t.stop();
 			}
 		});
 		btnQuit.setBounds(158, 400, 89, 23);
