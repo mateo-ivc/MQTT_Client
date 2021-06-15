@@ -27,7 +27,7 @@ public class Gui {
 	private JTextField txtIP;
 	private JTextField txtPort;
 	private boolean encryptedCon = false;
-	public Thread t;
+	public Thread connThread;
 	private String temp = "";
 	JTextPane textPane;
 	JPanel graphPanel;
@@ -106,7 +106,7 @@ public class Gui {
 		JButton btnCon = new JButton("Beam Me Up Scotty");
 		btnCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				t = new Thread() {
+				connThread = new Thread() {
 					public void run() {
 						singleton.connect(txtIP.getText(), txtPort.getText(), encryptedCon);
 						connect.setVisible(false);
@@ -114,7 +114,7 @@ public class Gui {
 
 					}
 				};
-				t.start();
+				connThread.start();
 			}
 		});
 		btnCon.setFont(new Font("Arial", Font.BOLD, 12));
@@ -159,12 +159,16 @@ public class Gui {
 					singleton.unsubscribe(topic);
 					temp = "";
 				} else {
-					if (!temp.isEmpty())
+					if (!temp.isEmpty()) {
 						singleton.unsubscribe(temp);
+						singleton.data.series.clear();
+						singleton.data.collection.clear();
+					}
+
 					temp = topic;
 					singleton.subscribe(topic);
-
 				}
+				singleton.chart.lineChart(topic);
 			}
 		};
 
@@ -187,8 +191,8 @@ public class Gui {
 		JButton btnQuit = new JButton("Disconnect");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(t != null)
-					t.stop();
+				if (connThread != null)
+					connThread.stop();
 			}
 		});
 		btnQuit.setBounds(158, 400, 89, 23);
@@ -199,19 +203,17 @@ public class Gui {
 		graphPanel.setLayout(null);
 		datapane.add(graphPanel);
 
-
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(Color.ORANGE);
-		textPanel.setBounds(0, screenSize.height-360, screenSize.width, 300);
+		textPanel.setBounds(0, screenSize.height - 360, screenSize.width, 300);
 		textPanel.setLayout(null);
 		datapane.add(textPanel);
 
 		textPane = new JTextPane();
 		textPane.setFont(new Font("Arial", Font.BOLD, 12));
-		textPane.setBounds(0,0,screenSize.width, 300);
+		textPane.setBounds(0, 0, screenSize.width, 300);
 		textPane.setVisible(true);
 		textPanel.add(textPane);
-		
 
 	}
 

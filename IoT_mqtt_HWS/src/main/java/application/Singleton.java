@@ -1,11 +1,15 @@
 package application;
 
+import java.util.HashMap;
+
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeriesCollection;
 
 public class Singleton {
 	Gui gui;
@@ -13,7 +17,9 @@ public class Singleton {
 	MqttClient client;
 	OnMessageCallback callBack;
 	DrawChart chart;
-	private boolean start = false;
+	Second time = new Second();
+	DataProcessing data;
+	HashMap<String, TimeSeriesCollection> collection;
 
 	private static Singleton instance = null;
 
@@ -38,14 +44,13 @@ public class Singleton {
 		try {
 			client.subscribe(topic);
 			System.out.println("subscribed to: " + topic);
+
 			if (chart == null)
 				chart = new DrawChart();
-			if (!start) {
-				chart.lineChart(topic);
-				start = true;
-			} else {
-				chart.lineChart(topic);
-			}
+
+			if (data == null)
+				data = new DataProcessing();
+
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +69,7 @@ public class Singleton {
 		try {
 			client.disconnect();
 			client.close();
-			gui.t.stop();
+			gui.connThread.stop();
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +77,7 @@ public class Singleton {
 	}
 
 	void abortCon() {
-		gui.t.stop();
+		gui.connThread.stop();
 	}
 
 	JFrame getFrame() {
