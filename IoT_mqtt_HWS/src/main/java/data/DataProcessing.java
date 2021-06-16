@@ -1,4 +1,4 @@
-package application;
+package data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +11,10 @@ import org.json.JSONObject;
 
 public class DataProcessing {
 	Second time = new Second();
-	HashMap<String, TimeSeriesCollection> collection = new HashMap<String, TimeSeriesCollection>();
-	ArrayList<TimeSeries> series = new ArrayList<TimeSeries>();
+	public HashMap<String, TimeSeriesCollection> collection = new HashMap<String, TimeSeriesCollection>();
+	public ArrayList<TimeSeries> series = new ArrayList<TimeSeries>();
 
-	void addData(JSONObject js, String topic) {
+	public void addData(JSONObject js, String topic) {
 		try {
 			int i = 0;
 			time = (Second) time.next();
@@ -42,7 +42,7 @@ public class DataProcessing {
 
 	}
 
-	HashMap<String, TimeSeriesCollection> getCollection() {
+	public HashMap<String, TimeSeriesCollection> getCollection() {
 		return this.collection;
 
 	}

@@ -11,14 +11,18 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeriesCollection;
 
+import data.DataProcessing;
+import gui.DrawChart;
+import gui.Gui;
+
 public class Singleton {
-	Gui gui;
+	public Gui gui;
 	App app;
-	MqttClient client;
+	public MqttClient client;
 	OnMessageCallback callBack;
-	DrawChart chart;
+	public DrawChart chart;
 	Second time = new Second();
-	DataProcessing data;
+	public DataProcessing data;
 	HashMap<String, TimeSeriesCollection> collection;
 
 	private static Singleton instance = null;
@@ -34,13 +38,13 @@ public class Singleton {
 		return Singleton.instance;
 	}
 
-	void connect(String ip, String port, boolean encryptedCon) {
+	public void connect(String ip, String port, boolean encryptedCon) {
 		app = new App().connect(ip, port, encryptedCon);
 		client = app.getClient();
 		callBack = app.getCallback();
 	}
 
-	void subscribe(String topic) {
+	public void subscribe(String topic) {
 		try {
 			client.subscribe(topic);
 			System.out.println("subscribed to: " + topic);
@@ -50,13 +54,12 @@ public class Singleton {
 
 			if (data == null)
 				data = new DataProcessing();
-
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
 	}
 
-	void unsubscribe(String topic) {
+	public void unsubscribe(String topic) {
 		try {
 			client.unsubscribe(topic);
 			System.out.println("unsubscribed to: " + topic);
@@ -65,7 +68,7 @@ public class Singleton {
 		}
 	}
 
-	void quitConnection() {
+	public void quitConnection() {
 		try {
 			client.disconnect();
 			client.close();
@@ -76,7 +79,7 @@ public class Singleton {
 
 	}
 
-	void abortCon() {
+	public void abortCon() {
 		gui.connThread.stop();
 	}
 

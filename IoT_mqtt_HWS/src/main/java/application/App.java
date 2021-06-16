@@ -19,7 +19,7 @@ public class App {
 		else
 			broker = "tcp://" + ip + ":" + port;
 
-		String clientId = "emqx_test";
+		String clientId = "HWS-Client";
 		MemoryPersistence persistence = new MemoryPersistence();
 
 		try {
@@ -31,8 +31,8 @@ public class App {
 
 			// MQTT connection option
 			MqttConnectOptions connOpts = new MqttConnectOptions();
-			connOpts.setUserName("emqx_test");
-			connOpts.setPassword("emqx_test_password".toCharArray());
+			connOpts.setUserName("HWS-Client");
+			connOpts.setPassword("HWS-Client_password".toCharArray());
 
 			// retain session
 			connOpts.setCleanSession(true);

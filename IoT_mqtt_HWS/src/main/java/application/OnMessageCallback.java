@@ -17,6 +17,7 @@ public class OnMessageCallback implements MqttCallback {
 	public void connectionLost(Throwable cause) {
 		// After the connection is lost, it usually reconnects here
 		System.out.println("disconnect，you can reconnect: " + cause);
+		System.out.println("hi");
 	}
 
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
