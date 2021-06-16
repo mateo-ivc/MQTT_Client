@@ -1,5 +1,7 @@
 # MQTT_Client
-Client for an mqtt-Broker
+Client for an <QTT-Broker
 
-currently WIP | it's an school project
+currently WIP 
+-actually got pretty far with it.
+  -should be done soon. 
 
