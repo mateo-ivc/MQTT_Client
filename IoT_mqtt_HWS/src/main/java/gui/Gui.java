@@ -24,6 +24,7 @@ import javax.swing.JToggleButton;
 import application.Singleton;
 
 public class Gui {
+
 	public Gui gui = this;
 	Singleton singleton = Singleton.getInstance();
 	public JFrame frame;
@@ -64,7 +65,7 @@ public class Gui {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frame = firstFrame();
 		frame.setVisible(true);
 	}
@@ -73,7 +74,7 @@ public class Gui {
 		singleton.gui = this.gui;
 	}
 
-	JFrame firstFrame() {
+	public JFrame firstFrame() {
 		JFrame f1 = new JFrame();
 		f1.setBounds(screenSize.width / 5, screenSize.height / 5, 800, 500);
 		f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,6 +96,8 @@ public class Gui {
 		lblPort.setBounds(f1.getWidth() / 3 - 12, 70, 82, 25);
 		connect.add(lblPort);
 
+		final JButton btnCon = new JButton("Beam Me Up Scotty");
+
 		txtIP = new JTextField("test.mosquitto.org");
 		txtIP.setFont(new Font("Arial", Font.BOLD, 12));
 		txtIP.setBounds((f1.getWidth() / 3) + 100, 30, 140, 25);
@@ -107,7 +110,7 @@ public class Gui {
 
 		// Button to establish connection with the broker just class the method
 		// connection in App.java
-		JButton btnCon = new JButton("Beam Me Up Scotty");
+
 		btnCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				connThread = new Thread() {
@@ -117,11 +120,10 @@ public class Gui {
 						frame.dispose();
 						frame = secondFrame();
 						frame.setVisible(true);
-
-						// datapane.setVisible(true);
 					}
 				};
 				connThread.start();
+
 			}
 		});
 		btnCon.setFont(new Font("Arial", Font.BOLD, 12));
@@ -153,8 +155,8 @@ public class Gui {
 			}
 		});
 
-		// Disconnect Button in Connect Panel
-		JButton btnQuit = new JButton("Disconnect");
+		// Quit Button in Connect Panel
+		JButton btnQuit = new JButton("Quit");
 		btnQuit.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
@@ -269,4 +271,5 @@ public class Gui {
 		return f2;
 
 	}
+
 }

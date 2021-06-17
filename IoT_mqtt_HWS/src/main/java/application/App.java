@@ -9,7 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
-	
+
 	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
@@ -17,7 +17,7 @@ public class App {
 	static String clientCrtFilePath = "homeCerts\\mosq-client-pub.pem";
 	static String clientKeyFilePath = "homeCerts\\mosq-client-key.pem";
 	String mqttUserName = "one";
-
+	String reason;
 
 	public App connect(String ip, String port, boolean encrypted) {
 		String broker;
@@ -40,13 +40,18 @@ public class App {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setUserName("HWS-Client");
 			connOpts.setPassword("HWS-Client_password".toCharArray());
-			
-			if(encrypted) {
-			//SSL SockerFactory
-			SocketFactory socketFactory = new SocketFactory();
-			SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath,clientKeyFilePath , "");
-			connOpts.setSocketFactory(socket);
+			try {
+				if (encrypted) {
+					// SSL SockerFactory
+					SocketFactory socketFactory = new SocketFactory();
+					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath,
+							clientKeyFilePath, "");
+					connOpts.setSocketFactory(socket);
+				}
+			} catch (Exception e) {
+				System.out.println("whops something isn't working");
 			}
+
 			// retain session
 			connOpts.setCleanSession(true);
 
@@ -58,15 +63,17 @@ public class App {
 
 		} catch (MqttException me) {
 
-			System.out.println("reason " + me.getReasonCode());
-			System.out.println("msg " + me.getMessage());
-			System.out.println("loc " + me.getLocalizedMessage());
-			System.out.println("cause " + me.getCause());
-			System.out.println("excep " + me);
-			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again");
+//			System.out.println("reason " + me.getReasonCode());
+//			System.out.println("msg " + me.getMessage());
+//			System.out.println("loc " + me.getLocalizedMessage());
+//			System.out.println("cause " + me.getCause());
+//			System.out.println("excep " + me);
+			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again \n", "Error",
+					JOptionPane.ERROR_MESSAGE);
+
 			singleton.abortCon();
 
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return this;
@@ -80,8 +87,5 @@ public class App {
 	OnMessageCallback getCallback() {
 		return myCallback;
 	}
-	
 
-
-	}
-
+}

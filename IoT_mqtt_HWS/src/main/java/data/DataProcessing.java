@@ -21,6 +21,7 @@ public class DataProcessing {
 			for (String key : js.keySet()) {
 				if (series.size() == i) {
 					series.add(new TimeSeries(key));
+					series.get(i).setMaximumItemCount(10);
 					if (!collection.containsKey(topic)) {
 						collection.put(topic, new TimeSeriesCollection());
 						collection.get(topic).addSeries(series.get(i));
@@ -32,7 +33,6 @@ public class DataProcessing {
 					}
 				}
 				series.get(i).add(time, js.getDouble(key));
-				System.out.println(collection.size());
 				i++;
 			}
 			// series.clear();

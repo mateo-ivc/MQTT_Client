@@ -1,6 +1,6 @@
 package application;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
@@ -9,11 +9,11 @@ import javax.swing.text.StyledDocument;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.jfree.data.time.Second;
-import org.jfree.data.time.TimeSeriesCollection;
 
 import data.DataProcessing;
 import gui.DrawChart;
 import gui.Gui;
+import utils.Message;
 
 public class Singleton {
 	public Gui gui;
@@ -23,7 +23,6 @@ public class Singleton {
 	public DrawChart chart;
 	Second time = new Second();
 	public DataProcessing data;
-	HashMap<String, TimeSeriesCollection> collection;
 
 	private static Singleton instance = null;
 
@@ -72,13 +71,14 @@ public class Singleton {
 		try {
 			client.disconnect();
 			client.close();
-			gui.connThread.stop();
+			abortCon();
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void abortCon() {
 		gui.connThread.stop();
 	}
@@ -87,11 +87,12 @@ public class Singleton {
 		return gui.frame;
 	}
 
-	void displayText() {
+	void displayText(ArrayList<Message> list) {
 		StyledDocument doc = (StyledDocument) gui.textPane.getDocument();
 		gui.textPane.setText("");
 		try {
-			for (Message value : callBack.list) {
+			for (Message value : list) {
+
 				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + "\n \n", null);
 			}
 		} catch (BadLocationException e) {
