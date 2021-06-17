@@ -13,7 +13,10 @@ public class App {
 	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
-	
+	static String caFilePath = "certificates\\ca-cert.pem";
+	static String clientCrtFilePath = "homeCerts\\mosq-client-pub.pem";
+	static String clientKeyFilePath = "homeCerts\\mosq-client-key.pem";
+	String mqttUserName = "one";
 
 
 	public App connect(String ip, String port, boolean encrypted) {
@@ -41,7 +44,7 @@ public class App {
 			if(encrypted) {
 			//SSL SockerFactory
 			SocketFactory socketFactory = new SocketFactory();
-			SSLSocketFactory socket = socketFactory.getSocketFactory(SocketFactory.getCaFilePath(), SocketFactory.getClientCrtFilePath(), SocketFactory.getClientKeyFilePath(), "");
+			SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath,clientKeyFilePath , "");
 			connOpts.setSocketFactory(socket);
 			}
 			// retain session
