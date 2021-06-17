@@ -25,7 +25,7 @@ public class OnMessageCallback implements MqttCallback {
 
 		// convert MqttMessage to string
 		content = new String(message.getPayload());
-		System.out.println(content);
+		//System.out.println(content);
 		System.out.println("Received Message! Topic: " + topic + " | Message: " + content);
 		
 		// adding message to ArrayList

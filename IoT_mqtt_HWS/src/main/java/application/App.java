@@ -1,5 +1,6 @@
 package application;
 
+import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -8,13 +9,16 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
+	
 	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
+	
+
 
 	public App connect(String ip, String port, boolean encrypted) {
 		String broker;
-		if (encrypted == true)
+		if (encrypted)
 			broker = "ssl://" + ip + ":" + port;
 		else
 			broker = "tcp://" + ip + ":" + port;
@@ -33,7 +37,13 @@ public class App {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setUserName("HWS-Client");
 			connOpts.setPassword("HWS-Client_password".toCharArray());
-
+			
+			if(encrypted) {
+			//SSL SockerFactory
+			SocketFactory socketFactory = new SocketFactory();
+			SSLSocketFactory socket = socketFactory.getSocketFactory(SocketFactory.getCaFilePath(), SocketFactory.getClientCrtFilePath(), SocketFactory.getClientKeyFilePath(), "");
+			connOpts.setSocketFactory(socket);
+			}
 			// retain session
 			connOpts.setCleanSession(true);
 
@@ -53,6 +63,8 @@ public class App {
 			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again");
 			singleton.abortCon();
 
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		return this;
 
@@ -65,5 +77,8 @@ public class App {
 	OnMessageCallback getCallback() {
 		return myCallback;
 	}
+	
 
-}
+
+	}
+
