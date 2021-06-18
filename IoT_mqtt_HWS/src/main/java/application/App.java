@@ -13,9 +13,9 @@ public class App {
 	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
-	static String caFilePath = "certificates\\ca-cert.pem";
-	static String clientCrtFilePath = "homeCerts\\mosq-client-pub.pem";
-	static String clientKeyFilePath = "homeCerts\\mosq-client-key.pem";
+	static String caFilePath = "homeCerts\\ca.pem";
+	static String clientCrtFilePath = "homeCerts\\client.pem";
+	static String clientKeyFilePath = "homeCerts\\clientkey.pem";
 	String mqttUserName = "one";
 	String reason;
 
