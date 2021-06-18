@@ -53,6 +53,7 @@ public class Singleton {
 
 			if (data == null)
 				data = new DataProcessing();
+			chart.lineChart(topic);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}

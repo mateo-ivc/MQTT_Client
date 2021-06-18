@@ -30,7 +30,7 @@ public class Gui {
 	public JFrame frame;
 	private JTextField txtIP;
 	private JTextField txtPort;
-	private boolean encryptedCon = false;
+	public boolean encryptedCon = false;
 	public Thread connThread;
 	private String temp = "";
 	public JTextPane textPane;

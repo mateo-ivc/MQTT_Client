@@ -20,22 +20,28 @@ public class DataProcessing {
 			time = (Second) time.next();
 			for (String key : js.keySet()) {
 				if (series.size() == i) {
+					// create new Timeseries
 					series.add(new TimeSeries(key));
+					// set max items to 10 so only 10 cords are shown in in the chart
 					series.get(i).setMaximumItemCount(10);
 					if (!collection.containsKey(topic)) {
+						// create topic if it doesn't exist
 						collection.put(topic, new TimeSeriesCollection());
+						// add series to series collection
 						collection.get(topic).addSeries(series.get(i));
 					} else {
+						// add series to series collection if topic exist
 						collection.get(topic).addSeries(series.get(i));
 						if (series.size() == 10) {
+							// delete the series 1 - 3 is limit is exceeded
 							series.get(i).delete(0, 2);
 						}
 					}
 				}
+				// add data to arraylist
 				series.get(i).add(time, js.getDouble(key));
 				i++;
 			}
-			// series.clear();
 		} catch (JSONException e) {
 			System.err.println("DATACOLLECTION: " + e.getMessage());
 		}

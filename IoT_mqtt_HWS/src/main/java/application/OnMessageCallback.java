@@ -26,6 +26,7 @@ public class OnMessageCallback implements MqttCallback {
 		singleton.gui.frame = singleton.gui.firstFrame();
 		singleton.abortCon();
 		singleton.gui.initialize();
+		singleton.gui.encryptedCon = false;
 		System.out.println("disconnect，you can reconnect: " + cause);
 		JOptionPane.showMessageDialog(singleton.getFrame(), "Whops, something went wrong check your connection.",
 				"Error", JOptionPane.ERROR_MESSAGE);
@@ -37,19 +38,21 @@ public class OnMessageCallback implements MqttCallback {
 
 		// convert MqttMessage to string
 		content = new String(message.getPayload());
-		// System.out.println("Received Message! Topic: " + topic + " | Message: " +
-		// content);
-
-		// adding message to ArrayList
-		list.add(new Message(topic, content));
-		reverted = new Revert().revert(list);
-		if (list.size() == 11) {
-			// update list if we get more then 10 messages
-			list.remove(0);
-		}
-		singleton.displayText(reverted);
 		try {
+			// create json object
 			JSONObject js = new JSONObject(content);
+			// adding message to ArrayList
+			list.add(new Message(topic, content));
+
+			// revert list
+			reverted = new Revert().revert(list);
+			if (list.size() == 11) {
+				// update list if we get more then 10 messages
+				list.remove(0);
+			}
+			singleton.displayText(reverted);
+
+			// add data for the chart
 			singleton.data.addData(js, topic);
 			singleton.chart.lineChart(topic);
 		} catch (Exception e) {
