@@ -16,7 +16,6 @@ public class App {
 	static String caFilePath = "homeCerts\\ca.pem";
 	static String clientCrtFilePath = "homeCerts\\client.pem";
 	static String clientKeyFilePath = "homeCerts\\clientkey.pem";
-	String mqttUserName = "one";
 	String reason;
 
 	public App connect(String ip, String port, boolean encrypted) {
@@ -38,14 +37,13 @@ public class App {
 
 			// MQTT connection option
 			MqttConnectOptions connOpts = new MqttConnectOptions();
-			connOpts.setUserName("HWS-Client");
-			connOpts.setPassword("HWS-Client_password".toCharArray());
+			//connOpts.setUserName("HWS-Client");
+			//connOpts.setPassword("HWS-Client_password".toCharArray());
 			try {
 				if (encrypted) {
 					// SSL SockerFactory
 					SocketFactory socketFactory = new SocketFactory();
-					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath,
-							clientKeyFilePath, "");
+					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath, clientKeyFilePath, "");
 					connOpts.setSocketFactory(socket);
 				}
 			} catch (Exception e) {
