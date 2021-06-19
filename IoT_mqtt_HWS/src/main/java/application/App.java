@@ -44,8 +44,7 @@ public class App {
 				if (encrypted) {
 					// SSL SockerFactory
 					SocketFactory socketFactory = new SocketFactory();
-					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath,
-							clientKeyFilePath, "");
+					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath, clientKeyFilePath, "");
 					connOpts.setSocketFactory(socket);
 				}
 			} catch (Exception e) {

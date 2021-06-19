@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -106,6 +107,7 @@ public class Gui {
 		txtPort = new JTextField("1883");
 		txtPort.setFont(new Font("Arial", Font.BOLD, 12));
 		txtPort.setBounds((f1.getWidth() / 3) + 100, 70, 140, 25);
+		txtPort.setEditable(false);
 		connect.add(txtPort);
 
 		// Button to establish connection with the broker just class the method
@@ -130,11 +132,18 @@ public class Gui {
 		btnCon.setBounds((f1.getWidth() / 2) + 50, 400, 200, 23);
 		connect.add(btnCon);
 
+		//Icons for the encrypted btn
+		ImageIcon lock = new ImageIcon("MQTT_pics\\lock.png");
+		ImageIcon unlock = new ImageIcon("MQTT_pics\\unlock.png");
+		
 		// Toggle Button -> if u want encrypted connection or not will just change the
 		// boolean encryptedCon
-		final JToggleButton tb = new JToggleButton("not encrypted connection");
+		final JToggleButton tb = new JToggleButton(unlock);
 		tb.setFont(new Font("Arial", Font.BOLD, 12));
-		tb.setBounds((f1.getWidth() / 2) - 100, 200, 200, 23);
+		tb.setBounds((f1.getWidth() / 2) - 60, 200, 104, 104);
+		tb.setBorderPainted(false);
+		tb.setContentAreaFilled(false);
+		tb.setSelectedIcon(lock);
 		connect.add(tb);
 
 		tb.addActionListener(new ActionListener() {
@@ -144,11 +153,11 @@ public class Gui {
 				JToggleButton tBtn = (JToggleButton) e.getSource();
 				// Toggles the boolean
 				if (tBtn.isSelected()) {
-					tb.setText("encrypted connection");
+//					tb.setText("encrypted connection");
 					txtPort.setText("8883");
 					encryptedCon = true;
 				} else {
-					tb.setText("not encrypted connection");
+//					tb.setText("not encrypted connection");
 					txtPort.setText("1883");
 					encryptedCon = false;
 				}
