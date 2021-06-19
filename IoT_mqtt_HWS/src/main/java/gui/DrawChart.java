@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.HashMap;
 
@@ -32,7 +33,10 @@ public class DrawChart {
 
 		// Changes background color
 		XYPlot plot = (XYPlot) chart.getPlot();
-		plot.setBackgroundPaint(Color.decode("#F5F4FF"));
+		plot.setBackgroundPaint(new Color(208,208,208));
+		plot.getRenderer().setSeriesStroke(0, new BasicStroke(2));
+		plot.getRenderer().setSeriesStroke(1, new BasicStroke(2));
+		plot.getRenderer().setSeriesStroke(2, new BasicStroke(2));
 
 		cp = new ChartPanel(chart);
 		cp.setBorder(BorderFactory.createLineBorder(Color.black));

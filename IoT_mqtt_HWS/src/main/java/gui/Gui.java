@@ -132,10 +132,10 @@ public class Gui {
 		btnCon.setBounds((f1.getWidth() / 2) + 50, 400, 200, 23);
 		connect.add(btnCon);
 
-		//Icons for the encrypted btn
-		ImageIcon lock = new ImageIcon("MQTT_pics\\lock.png");
-		ImageIcon unlock = new ImageIcon("MQTT_pics\\unlock.png");
-		
+		// Icons for the encrypted btn
+		ImageIcon lock = new ImageIcon("resources/lock.png");
+		ImageIcon unlock = new ImageIcon("resources/unlock.png");
+
 		// Toggle Button -> if u want encrypted connection or not will just change the
 		// boolean encryptedCon
 		final JToggleButton tb = new JToggleButton(unlock);
@@ -231,8 +231,9 @@ public class Gui {
 		for (int i = 0; i < topics.length; i++) {
 			// initialize btn and add it to pane
 			jRBtn.add(new JRadioButton(topics[i]));
-			subscriberPanel.add(jRBtn.get(i));
 			jRBtn.get(i).setFont(new Font("Arial", Font.BOLD, 12));
+//			jRBtn.get(i).setBorder(BorderFactory.createLineBorder(Color.lightGray));
+			subscriberPanel.add(jRBtn.get(i));
 			jRBtn.get(i).addActionListener(listener);
 			btnGroup.add(jRBtn.get(i));
 		}
