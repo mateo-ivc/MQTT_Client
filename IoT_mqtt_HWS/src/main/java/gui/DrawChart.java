@@ -32,7 +32,7 @@ public class DrawChart {
 
 		// Changes background color
 		XYPlot plot = (XYPlot) chart.getPlot();
-		plot.setBackgroundPaint(new Color(169, 169, 169));
+		plot.setBackgroundPaint(Color.decode("#F5F4FF"));
 
 		cp = new ChartPanel(chart);
 		cp.setBorder(BorderFactory.createLineBorder(Color.black));
