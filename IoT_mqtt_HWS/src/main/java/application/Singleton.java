@@ -15,6 +15,9 @@ import gui.DrawChart;
 import gui.Gui;
 import utils.Message;
 
+
+
+
 public class Singleton {
 	public Gui gui;
 	App app;

@@ -18,7 +18,8 @@ public class App {
 	static String caFilePath = "homeCerts\\ca.pem";
 	static String clientCrtFilePath = "homeCerts\\client.pem";
 	static String clientKeyFilePath = "homeCerts\\clientkey.pem";
-
+	static String userName = "guest";
+	static String password = "45";
 	public App connect(String ip, String port, boolean encrypted) {
 		String broker;
 		if (encrypted)
@@ -26,8 +27,9 @@ public class App {
 		else
 			broker = "tcp://" + ip + ":" + port;
 
-		String clientId = "" + UUID.randomUUID();
+		String clientId = " "+ UUID.randomUUID();
 		MemoryPersistence persistence = new MemoryPersistence();
+		SSLSocketFactory socketFactory = null;
 
 		try {
 			client = new MqttClient(broker, clientId, persistence);
@@ -38,17 +40,20 @@ public class App {
 
 			// MQTT connection option
 			MqttConnectOptions connOpts = new MqttConnectOptions();
-			// connOpts.setUserName("HWS-Client");
-			// connOpts.setPassword("HWS-Client_password".toCharArray());
+			connOpts.setUserName(userName);
+			connOpts.setPassword(password.toCharArray());
+			connOpts.setKeepAliveInterval(60);
+			
 			try {
 				if (encrypted) {
 					// SSL SockerFactory
-					SocketFactory socketFactory = new SocketFactory();
-					SSLSocketFactory socket = socketFactory.getSocketFactory(caFilePath, clientCrtFilePath, clientKeyFilePath, "");
-					connOpts.setSocketFactory(socket);
+					
+					socketFactory = SocketFactory.getSocketFactory(caFilePath, clientCrtFilePath, clientKeyFilePath, "");
+					connOpts.setSocketFactory(socketFactory);
 				}
-			} catch (Exception e) {
+			} catch (Exception e1) {
 				System.out.println("whops something isn't working");
+				e1.printStackTrace();
 			}
 
 			// retain session

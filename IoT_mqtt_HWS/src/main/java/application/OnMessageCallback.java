@@ -12,6 +12,11 @@ import org.json.JSONObject;
 import utils.Message;
 import utils.Revert;
 
+
+
+
+
+
 public class OnMessageCallback implements MqttCallback {
 	Singleton singleton = Singleton.getInstance();
 	ArrayList<Message> list = new ArrayList<Message>();

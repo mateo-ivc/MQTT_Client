@@ -26,7 +26,7 @@ public class SocketFactory {
 
 	// static String mqttPassword = "firstUser1";
 
-	SSLSocketFactory getSocketFactory(final String caCrtFile, final String crtFile, final String keyFile,
+	static SSLSocketFactory getSocketFactory(final String caCrtFile, final String crtFile, final String keyFile,
 			final String password) throws Exception {
 
 		Security.addProvider(new BouncyCastleProvider());
