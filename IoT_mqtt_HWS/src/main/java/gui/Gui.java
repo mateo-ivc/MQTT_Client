@@ -39,9 +39,6 @@ public class Gui {
 	JPanel graphPanel;
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,16 +54,10 @@ public class Gui {
 
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Gui() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	public void initialize() {
 		frame = firstFrame();
 		frame.setVisible(true);
@@ -82,7 +73,7 @@ public class Gui {
 		f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f1.getContentPane().setLayout(null);
 
-		// Connection frame which will hide after clicking Beam Me Up Scotty
+		// Connection frame which will hide after clicking Up Scotty
 		final JPanel connect = new JPanel();
 		connect.setSize(f1.getSize());
 		connect.setLayout(null);
@@ -98,7 +89,7 @@ public class Gui {
 		lblPort.setBounds(f1.getWidth() / 3 - 12, 70, 82, 25);
 		connect.add(lblPort);
 
-		final JButton btnCon = new JButton("Beam Me Up Scotty");
+		final JButton btnCon = new JButton("Connect");
 
 		txtIP = new JTextField("192.168.0.100");
 		txtIP.setFont(new Font("Arial", Font.BOLD, 12));
@@ -273,12 +264,23 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String input = JOptionPane.showInputDialog(f2, "Topic:", "add new topic", JOptionPane.PLAIN_MESSAGE);
+				boolean existing = false;
 				if (input == null || input.isEmpty()) {
 					JOptionPane.showMessageDialog(f2, "Topic can't be empty", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
-					jRBtn.add(new JRadioButton(input));
-					refreshTopics(jRBtn, subscriberPanel, listener, btnGroup);
-					f2.repaint();
+					// check if topic already exists
+					for (JRadioButton btn : jRBtn) {
+						if (btn.getText().equals(input)) {
+							existing = true;
+							JOptionPane.showMessageDialog(f2, "Topic already exists", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					if (!existing) {
+						jRBtn.add(new JRadioButton(input));
+						refreshTopics(jRBtn, subscriberPanel, listener, btnGroup);
+						f2.repaint();
+					}
 				}
 			}
 		};

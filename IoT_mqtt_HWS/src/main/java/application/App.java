@@ -56,7 +56,7 @@ public class App {
 			// retain session
 			connOpts.setCleanSession(true);
 			connOpts.setHttpsHostnameVerificationEnabled(false);
-			
+
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
@@ -65,16 +65,15 @@ public class App {
 
 		} catch (MqttException me) {
 
-			System.out.println("reason " + me.getReasonCode());
-			System.out.println("msg " + me.getMessage());
-			System.out.println("loc " + me.getLocalizedMessage());
-			System.out.println("cause " + me.getCause());
-			System.out.println("excep " + me);
-			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again \n", "Error", JOptionPane.ERROR_MESSAGE);
+//			System.out.println("reason " + me.getReasonCode());
+//			System.out.println("msg " + me.getMessage());
+//			System.out.println("loc " + me.getLocalizedMessage());
+//			System.out.println("cause " + me.getCause());
+//			System.out.println("excep " + me);
+			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again \n", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			singleton.abortCon();
 
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return this;
 	}
