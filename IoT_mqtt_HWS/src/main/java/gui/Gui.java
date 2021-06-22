@@ -100,7 +100,7 @@ public class Gui {
 
 		final JButton btnCon = new JButton("Beam Me Up Scotty");
 
-		txtIP = new JTextField("127.0.0.1");
+		txtIP = new JTextField("192.168.0.100");
 		txtIP.setFont(new Font("Arial", Font.BOLD, 12));
 		txtIP.setBounds((f1.getWidth() / 3) + 100, 30, 140, 25);
 		connect.add(txtIP);
@@ -154,11 +154,9 @@ public class Gui {
 				JToggleButton tBtn = (JToggleButton) e.getSource();
 				// Toggles the boolean
 				if (tBtn.isSelected()) {
-//					tb.setText("encrypted connection");
 					txtPort.setText("8883");
 					encryptedCon = true;
 				} else {
-//					tb.setText("not encrypted connection");
 					txtPort.setText("1883");
 					encryptedCon = false;
 				}

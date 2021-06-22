@@ -15,11 +15,10 @@ public class App {
 	private MqttClient client;
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
-	static String caFilePath = "homeCerts\\ca.pem";
-	static String clientCrtFilePath = "homeCerts\\client.pem";
-	static String clientKeyFilePath = "homeCerts\\clientkey.pem";
+	static String caCert = "schulCerts\\ca-cert.pem";
+	static String clientCrt = "schulCerts\\mosq-client-pub.pem";
+	static String clientKey = "schulCerts\\mosq-client-key.pem";
 	static String userName = "guest";
-	static String password = "45";
 
 	public App connect(String ip, String port, boolean encrypted) {
 		String broker;
@@ -42,25 +41,22 @@ public class App {
 			// MQTT connection option
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setUserName(userName);
-			connOpts.setPassword(password.toCharArray());
 			connOpts.setKeepAliveInterval(60);
 
 			try {
 				if (encrypted) {
 					// SSL SockerFactory
-
-					socketFactory = SocketFactory.getSocketFactory(caFilePath, clientCrtFilePath, clientKeyFilePath,
-							"");
+					socketFactory = SocketFactory.getSocketFactory(caCert, clientCrt, clientKey, " ");
 					connOpts.setSocketFactory(socketFactory);
 				}
 			} catch (Exception e1) {
-				// System.out.println("whops something isn't working");
 				e1.printStackTrace();
 			}
 
 			// retain session
 			connOpts.setCleanSession(true);
-
+			connOpts.setHttpsHostnameVerificationEnabled(false);
+			
 			// establish a connection
 			System.out.println("Connecting to broker: " + broker);
 			client.connect(connOpts);
@@ -69,21 +65,18 @@ public class App {
 
 		} catch (MqttException me) {
 
-//			System.out.println("reason " + me.getReasonCode());
-//			System.out.println("msg " + me.getMessage());
-//			System.out.println("loc " + me.getLocalizedMessage());
-//			System.out.println("cause " + me.getCause());
-//			System.out.println("excep " + me);
-			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again \n", "Error",
-					JOptionPane.ERROR_MESSAGE);
-
+			System.out.println("reason " + me.getReasonCode());
+			System.out.println("msg " + me.getMessage());
+			System.out.println("loc " + me.getLocalizedMessage());
+			System.out.println("cause " + me.getCause());
+			System.out.println("excep " + me);
+			JOptionPane.showMessageDialog(singleton.getFrame(), "Couldn't connect pls try again \n", "Error", JOptionPane.ERROR_MESSAGE);
 			singleton.abortCon();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return this;
-
 	}
 
 	MqttClient getClient() {
