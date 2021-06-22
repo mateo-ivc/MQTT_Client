@@ -8,23 +8,17 @@ import javax.swing.text.StyledDocument;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.jfree.data.time.Second;
 
 import data.DataProcessing;
 import gui.DrawChart;
 import gui.Gui;
 import utils.Message;
 
-
-
-
 public class Singleton {
 	public Gui gui;
 	App app;
 	public MqttClient client;
-	OnMessageCallback callBack;
 	public DrawChart chart;
-	Second time = new Second();
 	public DataProcessing data;
 
 	private static Singleton instance = null;
@@ -43,7 +37,7 @@ public class Singleton {
 	public void connect(String ip, String port, boolean encryptedCon) {
 		app = new App().connect(ip, port, encryptedCon);
 		client = app.getClient();
-		callBack = app.getCallback();
+		app.getCallback();
 	}
 
 	public void subscribe(String topic) {
@@ -96,7 +90,6 @@ public class Singleton {
 		gui.textPane.setText("");
 		try {
 			for (Message value : list) {
-
 				doc.insertString(0, value.getTopic() + ": " + value.getMessage() + "\n \n", null);
 			}
 		} catch (BadLocationException e) {

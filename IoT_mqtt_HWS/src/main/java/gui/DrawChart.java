@@ -20,14 +20,14 @@ public class DrawChart {
 	Singleton singleton = Singleton.getInstance();
 	private HashMap<String, TimeSeriesCollection> collection;
 	DataProcessing data = new DataProcessing();
-	ChartPanel cp;
+	private ChartPanel cp;
 
 	public void lineChart(String topic) {
 		this.collection = singleton.data.getCollection();
 		XYDataset dataset = collection.get(topic);
 		// Create chart
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(topic, // Chart
-				"Date", // X-Axis Label
+				"Time", // X-Axis Label
 				"Value", // Y-Axis Label
 				dataset);
 

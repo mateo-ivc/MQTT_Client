@@ -32,10 +32,6 @@ public class DataProcessing {
 					} else {
 						// add series to series collection if topic exist
 						collection.get(topic).addSeries(series.get(i));
-						if (series.size() == 10) {
-							// delete the series 1 - 3 is limit is exceeded
-							series.get(i).delete(0, 2);
-						}
 					}
 				}
 				// add data to arraylist

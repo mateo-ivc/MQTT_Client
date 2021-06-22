@@ -12,18 +12,10 @@ import org.json.JSONObject;
 import utils.Message;
 import utils.Revert;
 
-
-
-
-
-
 public class OnMessageCallback implements MqttCallback {
 	Singleton singleton = Singleton.getInstance();
 	ArrayList<Message> list = new ArrayList<Message>();
 	ArrayList<Message> reverted = new ArrayList<Message>();
-	double start = 0;
-	String topic;
-	String content;
 
 	public void connectionLost(Throwable cause) {
 		// After the connection is lost, it usually reconnects here
@@ -39,10 +31,9 @@ public class OnMessageCallback implements MqttCallback {
 	}
 
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		this.topic = topic;
 
 		// convert MqttMessage to string
-		content = new String(message.getPayload());
+		String content = new String(message.getPayload());
 		try {
 			// create json object
 			JSONObject js = new JSONObject(content);
