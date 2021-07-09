@@ -34,6 +34,7 @@ public class OnMessageCallback implements MqttCallback {
 
 		// convert MqttMessage to string
 		String content = new String(message.getPayload());
+		System.out.println(content);
 		try {
 			// create json object
 			JSONObject js = new JSONObject(content);

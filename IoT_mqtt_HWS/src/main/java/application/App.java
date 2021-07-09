@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -12,7 +13,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class App {
 
-	private MqttClient client;
+	private MqttAsyncClient client;
+	
 	Singleton singleton = Singleton.getInstance();
 	private OnMessageCallback myCallback;
 	static String caCert = "schulCerts\\ca-cert.pem";
@@ -32,7 +34,7 @@ public class App {
 		SSLSocketFactory socketFactory = null;
 
 		try {
-			client = new MqttClient(broker, clientId, persistence);
+			client = new MqttAsyncClient(broker, clientId, persistence);
 
 			// Callback
 			myCallback = new OnMessageCallback();
@@ -78,7 +80,7 @@ public class App {
 		return this;
 	}
 
-	MqttClient getClient() {
+	MqttAsyncClient getClient() {
 		return client;
 	}
 

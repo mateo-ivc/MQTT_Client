@@ -117,7 +117,6 @@ public class Gui {
 					}
 				};
 				connThread.start();
-
 			}
 		});
 		btnCon.setFont(new Font("Arial", Font.BOLD, 12));
@@ -278,7 +277,9 @@ public class Gui {
 					}
 					if (!existing) {
 						jRBtn.add(new JRadioButton(input));
+						jRBtn.get(jRBtn.size() - 1).addActionListener(listener);
 						refreshTopics(jRBtn, subscriberPanel, listener, btnGroup);
+						btnGroup.add(jRBtn.get(jRBtn.size() - 1));
 						f2.repaint();
 					}
 				}
@@ -299,6 +300,7 @@ public class Gui {
 						if (input.equals(jRBtn.get(j).getText())) {
 							jRBtn.remove(j);
 							refreshTopics(jRBtn, subscriberPanel, listener, btnGroup);
+							singleton.unsubscribe(input);
 							f2.repaint();
 							break;
 						} else {
@@ -343,8 +345,6 @@ public class Gui {
 			list.get(i).setBounds(2, i * 50, subscriberPanel.getWidth() - 100, 40);
 			list.get(i).setFont(new Font("Arial", Font.BOLD, 12));
 			subscriberPanel.add(list.get(i));
-			list.get(i).addActionListener(listener);
-			btnGroup.add(list.get(i));
 		}
 	}
 

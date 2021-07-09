@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -17,7 +18,7 @@ import utils.Message;
 public class Singleton {
 	public Gui gui;
 	App app;
-	public MqttClient client;
+	public MqttAsyncClient client;
 	public DrawChart chart;
 	public DataProcessing data;
 
@@ -42,7 +43,7 @@ public class Singleton {
 
 	public void subscribe(String topic) {
 		try {
-			client.subscribe(topic);
+			client.subscribe(topic, 0);
 			System.out.println("subscribed to: " + topic);
 
 			if (chart == null)
@@ -67,13 +68,13 @@ public class Singleton {
 
 	public void quitConnection() {
 		try {
+			gui.encryptedCon = false;
 			client.disconnect();
 			client.close();
 			abortCon();
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@SuppressWarnings("deprecation")
